@@ -1,0 +1,7 @@
+; $Id$
+name = WissKI Linktab Module
+description = An addon for the WissKI-Module that shows referenceable masks as tabs
+core = 6.x
+version = 1.0
+dependencies[] = wisski
+package = "WissKI"
