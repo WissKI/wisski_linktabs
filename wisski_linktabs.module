@@ -30,13 +30,28 @@ function wisski_linktabs_menu() {
       'title'    => t('Create and link ' . $data['name']),
       'page callback' => 'wisski_linktabs_redirect',
       'page arguments' => array(1, $point_to, $use_path_to, $use_path_from),
-      'access callback' => 'wisski_loader',
-      'access arguments' => array(1, 'wisski access graph'),
+      'access callback' => 'wisski_linktab_check',
+      'access arguments' => array(1, $add_to, $point_to, $use_path_to, $use_path_from),
       'type'     => MENU_LOCAL_TASK,
     );
   }
 
   return $items;
+}
+
+function wisski_linktab_check($node, $add_to, $point_to, $use_path_to, $use_path_from) {
+
+  // is the path there?
+  $sparql = wisski_pathbuilder_get_sparql($use_path_from, 'FILTER ( ?x0 = <' . wisski_store_getObj()->wisski_ARCAdapter_delNamespace($node->title) . '> ) ');
+
+  // get the results
+  $sprows = wisski_store_getObj()->wisski_ARCAdapter_getStore()->query($sparql, 'rows');
+  
+  // if not, it may not be added.
+  if(empty($sprows))
+    return false;
+
+  return TRUE;
 }
 
 function wisski_linktabs_redirect($return, $pathid, $use_path_to, $use_path_from) {
