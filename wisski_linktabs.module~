@@ -32,7 +32,7 @@ function wisski_linktabs_menu() {
       'page callback' => 'wisski_linktabs_redirect',
       'page arguments' => array(1, $point_to, $use_path_to, $use_path_from),
       'access callback' => 'wisski_linktab_check',
-      'access arguments' => array(1, 'wisski_access_linktab', $add_to, $point_to, $use_path_to, $use_path_from),
+      'access arguments' => array(1, $add_to, $point_to, $use_path_to, $use_path_from),
       'type'     => MENU_LOCAL_TASK,
     );
   }
@@ -40,16 +40,7 @@ function wisski_linktabs_menu() {
   return $items;
 }
 
-function wisski_linktabs_perm() {
-  return array('wisski_access_linktab');
-}
-
-function wisski_linktab_check($node, $permission, $add_to, $point_to, $use_path_to, $use_path_from) {
-  
-  $access = wisski_loader($node, $permission);
-
-  if(!$access)
-    return false;
+function wisski_linktab_check($node, $add_to, $point_to, $use_path_to, $use_path_from) {
 
   // is the path there?
   $sparql = wisski_pathbuilder_get_sparql($use_path_from, 'FILTER ( ?x0 = <' . wisski_store_getObj()->wisski_ARCAdapter_delNamespace($node->title) . '> ) ');
