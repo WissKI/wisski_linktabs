@@ -17,6 +17,7 @@ function wisski_linktabs_menu() {
   
   $to_add = variable_get('wisski_linktab_items', array());
   foreach($to_add as $key => $value) {
+    $name = $value['name'];
     $add_to = $value['add_to'];
     $point_to = $value['point_to'];
     
@@ -27,7 +28,7 @@ function wisski_linktabs_menu() {
     $data = wisski_pathbuilder_getPathData($point_to);
     
     $items['node/%node/' . $point_to] = array(
-      'title'    => t('Create and link ' . $data['name']),
+      'title'    => t($name), #t('Create and link ' . $data['name']),
       'page callback' => 'wisski_linktabs_redirect',
       'page arguments' => array(1, $point_to, $use_path_to, $use_path_from),
       'access callback' => 'wisski_linktab_check',
@@ -92,6 +93,11 @@ function wisski_linktab_main_submit($form, $form_state) {
       $items[$id]['use_path_from'] = $value;
       continue;
     }
+    if(strpos($key, 'name') !== FALSE) {
+      $id = substr($key, 4);
+      $items[$id]['name'] = $value;
+      continue;
+    }
     
   }
   
@@ -123,6 +129,12 @@ function wisski_linktab_main() {
       '#collapsible' => '1',
       '#collapsed' => FALSE,
       '#title' => t('Link tab'),
+    );
+
+    $form['linktab' . $itemid]['name' . $itemid] = array(
+      '#type' => 'textfield',
+      '#default_value' => $values['name'],
+      '#title' => t('Name of the path.'),
     );
     
     $form['linktab' . $itemid]['add_to' . $itemid] = array(
