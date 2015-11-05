@@ -16,6 +16,8 @@ function wisski_linktabs_menu() {
   );
   
   $to_add = variable_get('wisski_linktab_items', array());
+  module_load_include('inc', 'wisski_pathbuilder');
+  
   foreach($to_add as $key => $value) {
     $name = $value['name'];
     $add_to = $value['add_to'];
