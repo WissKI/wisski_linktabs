@@ -29,7 +29,7 @@ function wisski_linktabs_menu() {
 
     $data = wisski_pathbuilder_getPathData($point_to);
     
-    $items['node/%node/' . $point_to] = array(
+    $items['node/%node/' . $point_to . '/' . $use_path_to] = array(
       'title'    => t($name), #t('Create and link ' . $data['name']),
       'page callback' => 'wisski_linktabs_redirect',
       'page arguments' => array(1, $point_to, $use_path_to, $use_path_from),
